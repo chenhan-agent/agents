@@ -21,6 +21,12 @@
 
 換句話說，請以各 skill 自己的 `target-metrics.md` 為最終標準。
 
+如果使用者明確要求看 **reasoning gap**，則：
+
+- 答案正確與否只算 baseline
+- 主要看 solver 是否抓到 generator 真正放進去的線索、轉折與文化層次
+- full / mini 的差距，優先看 `理由對齊度`、`理由品質`、`難點辨識`
+
 ## Roles
 
 ### generator agent
@@ -89,6 +95,12 @@
 - 難點辨識
 - 總分
 
+如果 benchmark 目標是 reasoning gap，建議另外記錄：
+
+- 是否只是「猜對但沒講對」
+- 是否指出真正的轉折 clue
+- 是否把側面文化線索誤解成一般常識線索
+
 ## Recommended scenarios
 
 至少跑三種 target 類型：
@@ -139,6 +151,12 @@
 1. 至少多數 solver 結果能維持高可解性
 2. generator 的設計理由與 solver 的理解大致對得上
 3. full-tier / mini-tier 的表現差距要符合該 skill 的 target metrics
+
+如果目標是 reasoning gap，則更具體地說：
+
+1. full-tier 不一定要比較會猜
+2. 但 full-tier 應該比較會講對
+3. mini-tier 就算猜中，也不代表通過；如果理由停在表層，仍算 reasoning gap 存在
 
 ## Failure diagnosis
 
