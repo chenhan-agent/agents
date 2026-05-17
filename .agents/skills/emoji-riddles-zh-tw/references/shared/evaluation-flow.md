@@ -1,10 +1,10 @@
 # 中文 Emoji 表意設計 Benchmark Flow
 
-這份文件定義 `emoji-riddles-zh-tw` 的 benchmark 流程，目標是量測：
+這份文件定義 emoji 類 skill 的 benchmark 流程，目標是量測：
 
-1. **general / full-tier generators** 用了 skill 之後，能不能穩定把指定 target 轉成夠好的 emoji 設計
-2. **general / full-tier solvers** 能不能從 emoji 還原 target，而且理由對得上
-3. **mini-tier solvers** 是否明顯比較難解出
+1. **generators** 用了 skill 之後，能不能穩定把指定 target 轉成夠好的 emoji 設計
+2. **solvers** 能不能從 emoji 還原 target，而且理由對得上
+3. 不同 model tiers 的表現是否符合該 skill 自己的目標
 
 ## 核心概念
 
@@ -12,18 +12,20 @@
 
 1. **設計品質**
 2. **可解性**
-3. **tier separation**
+3. **tier fit**
 
-其中最重要的是 **tier separation**：
+其中第 3 點不是固定要求 separation，而是看：
 
-- full-tier 要有高成功率
-- mini-tier 要有明顯較低成功率
+- 如果 skill 是 plain 版，mini-tier 也應該常能理解
+- 如果 skill 是 witty 版，則應允許 full-tier 與 mini-tier 拉開差距
+
+換句話說，請以各 skill 自己的 `target-metrics.md` 為最終標準。
 
 ## Roles
 
 ### generator agent
 
-負責依照 `emoji-riddles-zh-tw` skill，將指定 target 轉成 4 個 emoji。
+負責依照目標 skill，將指定 target 轉成 4 個 emoji。
 
 ### solver agent
 
@@ -31,7 +33,7 @@
 
 ### judge agent
 
-負責依照 `references/shared/scoring-rubric.md` 對 solver 結果打分。
+負責依照 scoring rubric 對 solver 結果打分。
 
 ## Model tiers
 
@@ -62,7 +64,7 @@
 - 格式是否正確
 - 是否真的是 4 個 emoji
 - 設計是否有層次
-- 是否不直白
+- target 揭曉後是否合理
 
 ### Stage 2: solver performance
 
@@ -103,15 +105,14 @@
 
 ```json
 {
-  "target": "刈包（虎咬豬）",
-  "emoji": "🐯 🐷 🥜 🌿",
+  "target": "大阪旅遊",
+  "emoji": "😆 🏃 🐙 🌉",
   "rationale": {
-    "🐯": "虎咬豬俗稱",
-    "🐷": "豬五花內餡",
-    "🥜": "花生粉",
-    "🌿": "香菜"
-  },
-  "difficulty_note": "full-tier 較容易透過俗稱與配料聯想解出，mini-tier 較容易停在食材層次。"
+    "😆": "大阪的綜藝感與城市氣質",
+    "🏃": "道頓堀跑跑人印象",
+    "🐙": "章魚燒",
+    "🌉": "橋邊夜逛畫面"
+  }
 }
 ```
 
@@ -119,15 +120,15 @@
 
 ```json
 {
-  "guess": "刈包（虎咬豬）",
-  "confidence": 95,
+  "guess": "大阪旅遊",
+  "confidence": 88,
   "reasoning": {
-    "🐯": "虎咬豬俗稱",
-    "🐷": "豬五花",
-    "🥜": "花生粉",
-    "🌿": "香菜"
+    "😆": "聯想到大阪的搞笑文化",
+    "🏃": "想到道頓堀跑跑人",
+    "🐙": "章魚燒",
+    "🌉": "橋邊和河岸夜景"
   },
-  "alternatives": []
+  "alternatives": ["大阪", "道頓堀"]
 }
 ```
 
@@ -135,9 +136,9 @@
 
 一組 emoji 設計要算成功，不只要 full-tier 猜得出來，還要符合：
 
-1. 至少多數 full-tier solvers 得分高
-2. mini-tier 平均分明顯較低
-3. mini-tier 就算偶爾猜中，也不能在理由對齊度上拿高分
+1. 至少多數 solver 結果能維持高可解性
+2. generator 的設計理由與 solver 的理解大致對得上
+3. full-tier / mini-tier 的表現差距要符合該 skill 的 target metrics
 
 ## Failure diagnosis
 
@@ -149,17 +150,16 @@
 
 如果 mini-tier 也輕鬆解出：
 
-- 設計太直白
-- 線索太 obvious
-- skill 沒有成功要求側面聯想或轉折
+- 對 witty skill：可能代表設計太直白、線索太 obvious
+- 對 plain skill：這不一定是問題，先回頭看該 skill 的 target metrics
 
 ## Iteration loop
 
 1. 跑 benchmark
-2. 找出 low separation 題目
+2. 找出不符合 target metrics 的題目
 3. 回頭修：
    - skill description
    - emoji 設計原則
-   - 禁用過直白線索
-   - 難度評語要求
+   - 線索分配
+   - 評語要求
 4. 再跑一次

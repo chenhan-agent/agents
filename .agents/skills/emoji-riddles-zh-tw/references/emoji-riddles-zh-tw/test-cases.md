@@ -18,7 +18,7 @@
    - `target`
    - `emoji`
    - `解析`
-   - `難度評語`
+   - `可讀性評語`
 4. 不要直接拆 target 字面
 5. 不要用國旗、地圖輪廓、或一眼秒懂的直給提示
 
@@ -31,13 +31,13 @@ generator agent 應產出：
 1. `target`
 2. `emoji`
 3. `解析`
-4. `難度評語`
+4. `可讀性評語`
 
 其中：
 
 - `emoji` 必須是 4 個 emoji
 - `解析` 要說明每個 emoji 為什麼能連到 target
-- `難度評語` 要交代為何 strong model 比較容易、mini model 比較容易卡住
+- `可讀性評語` 要交代這組為什麼自然、好懂、但又不至於太乾
 
 ## Solver output contract
 
@@ -57,12 +57,12 @@ solver agent 應產出：
 
 ### 目標
 
-確認 skill 在旅遊類 target 上能成立，但不會退化成 landmark 直給模板。
+確認 skill 在旅遊類 target 上能成立，而且整體讀感自然，不會只剩 landmark 列點。
 
 ### Generator prompt
 
 ```text
-請使用目前啟用的 emoji-riddles-zh-tw skill，將「大阪旅遊」轉成 1 組繁體中文 4-emoji 表意設計。只輸出這四個段落：target、emoji、解析、難度評語。設計要有層次、有巧思，不要太直白。
+請使用目前啟用的 emoji-riddles-zh-tw skill，將「大阪旅遊」轉成 1 組繁體中文 4-emoji 表意設計。只輸出這四個段落：target、emoji、解析、可讀性評語。設計要自然、好懂、有畫面，不要只是 landmark 關鍵詞列點。
 ```
 
 ### Solver prompt
@@ -75,7 +75,7 @@ solver agent 應產出：
 
 - 旅行主題明確
 - 不用國旗或地圖
-- 至少有 1 個側面聯想，不是全靠 landmark
+- 至少有 1 個氣氛或生活印象，不是全靠 landmark
 
 ## 測資 2：食物或飲料類 target
 
@@ -86,7 +86,7 @@ solver agent 應產出：
 ### Generator prompt
 
 ```text
-請使用目前啟用的 emoji-riddles-zh-tw skill，將「珍珠奶茶」轉成 1 組繁體中文 4-emoji 表意設計。只輸出這四個段落：target、emoji、解析、難度評語。設計要有趣、有機智感，而且不要太簡單。
+請使用目前啟用的 emoji-riddles-zh-tw skill，將「珍珠奶茶」轉成 1 組繁體中文 4-emoji 表意設計。只輸出這四個段落：target、emoji、解析、可讀性評語。設計要自然、有台灣生活感，而且不要只是把外觀拆成 4 個圖示。
 ```
 
 ### Solver prompt
@@ -110,7 +110,7 @@ solver agent 應產出：
 ### Generator prompt
 
 ```text
-請使用目前啟用的 emoji-riddles-zh-tw skill，將「宮崎駿」轉成 1 組繁體中文 4-emoji 表意設計。只輸出這四個段落：target、emoji、解析、難度評語。設計要公平、有巧思，不能只是直接摘要 target。
+請使用目前啟用的 emoji-riddles-zh-tw skill，將「宮崎駿」轉成 1 組繁體中文 4-emoji 表意設計。只輸出這四個段落：target、emoji、解析、可讀性評語。設計要公平、有畫面，不能只是直接摘要 target。
 ```
 
 ### Solver prompt
@@ -124,6 +124,15 @@ solver agent 應產出：
 - 題材不是旅遊、不是食物
 - 有文化或角色聯想
 - 解析後會覺得連法合理
+
+## Plain 版通過訊號
+
+如果這個 skill 表現正常，常見訊號應該是：
+
+1. full-tier 很容易猜中
+2. mini-tier 也常能猜中或猜得很接近
+3. judge 雖然不一定把「難點辨識」打很高，但整體分數仍高
+4. 讀者會覺得這是好懂的表意設計，不是故意藏梗
 
 ## 建議驗證流程
 
