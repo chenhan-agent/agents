@@ -11,7 +11,7 @@ description: 適用於為台灣使用者設計繁體中文的 4 個 emoji 表意
 
 1. **使用者先給一個 target**
 2. agent 把 target 轉成 4 個 emoji 的表意設計
-3. 這組 emoji 要對 strong model 可解，但對 mini model 不夠直白
+3. 這組 emoji 要讓 full / strong model 更容易**講對理由**，而 mini model 就算猜中，也較容易只停在表面理由
 
 換句話說，這個 skill 是在教 agent：
 **怎麼把任何指定 target 轉成夠有趣、夠機智、夠有層次的 emoji 表達。**
@@ -22,8 +22,8 @@ description: 適用於為台灣使用者設計繁體中文的 4 個 emoji 表意
 
 - 使用者明確要「機智一點」「不要太直白」
 - 想讓 emoji 設計偏繁中語感、偏台灣使用者直覺
-- 想控制難度，讓 strong model 比較容易猜到，但 mini model 不要太容易秒中
-- 想做 benchmark，觀察 strong-vs-mini separation
+- 想控制難度，讓 strong model 比較容易**講對設計理由**
+- 想做 benchmark，觀察 strong-vs-mini 的 **reasoning gap**
 
 如果使用者只是想要自然、好懂、有畫面的 emoji，應優先用 `emoji-riddles-zh-tw` 這個 plain 版。
 
@@ -53,22 +53,23 @@ description: 適用於為台灣使用者設計繁體中文的 4 個 emoji 表意
 
 預設難度是：
 
-- strong model：應能靠文化、語感、常識、諧音或意象串起來
-- mini model：應該只能猜到類型、範圍，或停在模糊聯想
+- strong model：應能靠文化、語感、常識、諧音或意象串起來，並較能說出設計者真正放的線索
+- mini model：可以猜中，但較容易停在表面聯想、泛稱答案，或把側面線索讀成通用線索
 
-真正的目標不是單純「做難」，而是做出 **對 full-tier 有解、對 mini-tier 不夠穩定** 的 emoji 設計。
+真正的目標不是單純「做難」，而是做出 **答案可解、但理由層次有差距** 的 emoji 設計。
 
-## Separation-first 規則
+## Reasoning-gap-first 規則
 
-為了拉開 full-tier 與 mini-tier，預設必須遵守：
+為了拉開 full-tier 與 mini-tier 的理由品質，預設必須遵守：
 
 1. **不要同時給出「target 俗稱」和「兩個以上經典配料 / 經典元素」**
 2. **最多只允許 1 個直接指向 target 本體的 clue**
 3. **至少 1 個 emoji 必須是側面文化線索，而不是食材、地標或外觀直譯**
 4. **至少 1 個 emoji 必須承擔轉折或誤導功能**
 5. **如果 4 個 emoji 全部都能在百科條目第一段找到，通常太直白**
-6. **至少 2 個 emoji 必須是 indirect clue，不能都是旅遊懶人包會直接列出的熱門元素**
-7. **如果任兩個 emoji 就足以讓 mini model 鎖定答案，代表這組通常不夠好**
+6. **至少 2 個 emoji 必須是 indirect clue，不能都是懶人包或百科會直接列出的熱門元素**
+7. **如果任兩個 emoji 就足以讓 mini model 不只猜中，還能把理由講完整，代表這組通常不夠好**
+8. **至少 1 個 emoji 的設計理由要帶有「作者真的想表達什麼」，不能只停在物件對物件**
 
 對食物題尤其重要：
 
@@ -85,11 +86,17 @@ description: 適用於為台灣使用者設計繁體中文的 4 個 emoji 表意
 - **如果已經用了經典食物，就不要再搭配主題樂園或唯一 landmark**
 - **如果已經用了主題樂園或唯一 landmark，就不要再搭配經典食物**
 - 盡量讓其中 2 個線索單看時仍有別的 plausible 答案，必須合起來才收斂
+- 至少 1 個線索應該是 **城市的社會氣質 / 在地行為 / 旅人情緒記憶**，而不是景點或美食
+- 至少 1 個線索應該能合理誤導到另一個亞洲城市或同類型觀光城市
+- 避免只用「吃、買、夜景、交通方便」這種所有大城市都能套的萬用組合
 
 對文化題尤其重要：
 
 - 不要把角色外觀四件套直接排出來
 - 至少留 1 個線索給「懂的人會會心一笑」的層次
+- 如果 target 是創作者、導演、作者，優先做 **作者指紋**，不是作品清單
+- 創作者題最好拆成：**創作媒介 / recurring motif / worldview / 1 個 signature reference**
+- signature reference 最多 1 個；不要連丟兩個以上代表作 clue
 
 ## Target-driven 設計方法
 
@@ -121,6 +128,23 @@ description: 適用於為台灣使用者設計繁體中文的 4 個 emoji 表意
 1. 這組是不是在列「旅遊部落格前五名關鍵字」？
 2. 這組是不是只靠 1 到 2 個超強觀光線索就能直達答案？
 3. 拿掉最直球的那個 emoji 之後，其餘 3 個還能不能維持合理但不秒答？
+
+對創作者 / 文化題，優先檢查：
+
+1. 這組是在講「作者本人」，還是在亂列作品元素？
+2. 有沒有至少 1 個 clue 能說明這位作者的長期母題，而不只是單部作品？
+3. 如果 mini model 把答案猜成工作室 / 類型 / 代表作，會不會比 full model 更難講清楚為什麼是「這個人」？
+
+## 解析設計要求
+
+出題時，最好在心中先替 4 個 emoji 分配角色：
+
+1. **anchor clue**：幫答案收斂，但不要過直
+2. **author-intent clue**：真正承載你想讓 strong model 看懂的設計重點
+3. **bridge clue**：把答案從泛類型拉回指定 target
+4. **misread clue**：讓 mini model 有機會猜到答案，但比較容易講錯理由
+
+如果 4 個 emoji 都只是「想到什麼列什麼」，通常 reasoning gap 不會明顯。
 
 ## 推薦輸出格式
 
@@ -155,7 +179,7 @@ description: 適用於為台灣使用者設計繁體中文的 4 個 emoji 表意
 
 ## References
 
-這個 skill 的 benchmark 重點在 strong-vs-mini separation。
+這個 skill 的 benchmark 重點在 strong-vs-mini 的 **reasoning gap**。
 
 - 專屬 metrics：`references/emoji-witty-zh-tw/target-metrics.md`
 - 專屬 test cases：`references/emoji-witty-zh-tw/test-cases.md`

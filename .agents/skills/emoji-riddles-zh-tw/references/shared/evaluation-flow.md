@@ -37,6 +37,14 @@
 
 負責根據 emoji 反推 target，並提供理由。
 
+solver prompt 應明確鎖定：
+
+- 你現在是 **solver**，不是 generator
+- 不要重新設計題目
+- 不要替出題者改寫更好的 emoji
+- 只根據現有 emoji 解釋它最可能想表達的意思
+- 如果某個 emoji 可能是側面文化線索、轉折 clue 或誤導 clue，要明說
+
 ### judge agent
 
 負責依照 scoring rubric 對 solver 結果打分。
@@ -82,6 +90,14 @@
 - Copilot mini
 - Codex mini
 - Gemini mini
+
+如果同一個 repo 內同時存在多個 emoji skills，solver prompt 要額外明說：
+
+- 你現在不是在出題
+- 請不要套用 generator 的出題口吻
+- 只做「還原 target + 解釋理由」
+
+若 solver 明顯改成重新出題、改題、補題，這輪 benchmark 應標成 **invalid run**。
 
 ### Stage 3: judge scoring
 

@@ -2,6 +2,14 @@
 
 這份文件定義 `emoji-witty-zh-tw` 的目標指標，讓 benchmark 結果有明確標準可比。
 
+## Sample-size baseline
+
+為了避免 overfit，解讀這份 metrics 時：
+
+- **至少 6 題** 才能當成一輪有代表性的 benchmark
+- 而且應覆蓋 **旅遊、食物 / 飲料、文化 / 創作者** 三大類
+- 如果只跑 3 題，最多只能視為 smoke test，不應直接拿來宣稱 skill 已穩定
+
 ## Primary goal
 
 希望達成：
@@ -55,6 +63,8 @@
 - full-tier 難點辨識率 - mini-tier 難點辨識率：**>= 25 個百分點**
 
 如果 gap 不夠，表示設計還不夠有層次，或是理由設計得不夠可被 strong model 正確讀出。
+
+如果只有少數固定 target 表現好，也不能算 strong result；必須在多題輪替下仍大致維持這些 gap。
 
 ## Interpretation
 
