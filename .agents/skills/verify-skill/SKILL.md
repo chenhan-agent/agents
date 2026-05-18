@@ -35,13 +35,17 @@ Use these model targets unless the user explicitly requests a different matrix.
 
 - Copilot -> `gpt-5.4`
 - Codex -> `gpt-5.4`
-- Gemini -> `gemini-3.1-pro`
+- Gemini -> `gemini-3.1-pro-preview`
+
+For full-tier runs, use **high reasoning effort** where the CLI supports it.
 
 ### Mini tier
 
 - Copilot -> `gpt-5.4-mini`
 - Codex -> `gpt-5.4-mini`
-- Gemini -> `gemini-3.1-flash`
+- Gemini -> `gemini-3-flash-preview`
+
+For mini-tier runs, keep the default or lower-cost reasoning settings. Do not raise reasoning effort unless the user explicitly asks for it.
 
 If a CLI rejects a model name, report the exact mismatch instead of silently switching.
 
@@ -52,6 +56,15 @@ Prefer headless commands:
 - Copilot -> `copilot --allow-all-tools --model <model> -p "<prompt>"`
 - Gemini -> `gemini --skip-trust --model <model> -p "<prompt>"`
 - Codex -> `codex exec -m <model> "<prompt>"`
+
+Reasoning-effort guidance:
+
+- Copilot full tier -> add `--effort high`
+- Copilot mini tier -> omit `--effort high` unless explicitly requested
+- Codex -> if the current CLI exposes a reasoning-effort control, set it high for full tier and leave it default for mini tier
+- Gemini -> if the current CLI exposes a reasoning or thinking control, set it high for full tier and leave it default for mini tier
+
+Do not invent unsupported flags. If a CLI does not expose a stable reasoning-effort option in the current environment, report that clearly and continue with the fixed model tier.
 
 Run from the repository root or the intended working directory for the skill under test.
 
