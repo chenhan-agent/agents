@@ -66,6 +66,18 @@
 
 如果只有少數固定 target 表現好，也不能算 strong result；必須在多題輪替下仍大致維持這些 gap。
 
+## Weak-case recovery signal
+
+除了看整體平均，也要特別看已知弱點題，尤其是 travel 類的 `大阪旅遊` 這種哨兵題。
+
+如果這類題目要算有改善，至少應看到下列其中多數訊號：
+
+- full-tier 比 mini-tier 更能指出 **city-system clue** 或 **traveler-friction clue**
+- mini-tier 更常把題目讀成 postcard 級城市介紹，而不是讀到設計者真正放的轉折
+- full-tier 理由對齊度明顯高於 mini-tier，不能再像先前那樣幾乎同一套說法都能成立
+
+如果 mini-tier 仍能只靠「名物 + 熱鬧城市印象 + 橋 / 夜景 / 地標」把整組解釋得很完整，這種 travel weak case 仍應視為 **未修復**。
+
 ## Interpretation
 
 ### Strong result

@@ -1,0 +1,3 @@
+.autoresearch-runs/
+__pycache__/
+*.pyc
