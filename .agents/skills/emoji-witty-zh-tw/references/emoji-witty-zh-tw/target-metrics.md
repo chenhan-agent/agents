@@ -75,8 +75,10 @@
 - full-tier 比 mini-tier 更能指出 **city-system clue** 或 **traveler-friction clue**
 - mini-tier 更常把題目讀成 postcard 級城市介紹，而不是讀到設計者真正放的轉折
 - full-tier 理由對齊度明顯高於 mini-tier，不能再像先前那樣幾乎同一套說法都能成立
+- generator 的解析能明確說出至少 3 種層次，且 full-tier 比 mini-tier 更能分辨「城市系統」和「旅人摩擦」不是同一個交通 / 購物子系統
+- 對 `大阪旅遊`，mini-tier 若猜成或解成單一交通卡、單一商場、單一車站、單一觀光區，應視為有產生預期誤讀；full-tier 則應能把答案拉回整座城市的旅遊體感
 
-如果 mini-tier 仍能只靠「名物 + 熱鬧城市印象 + 橋 / 夜景 / 地標」把整組解釋得很完整，這種 travel weak case 仍應視為 **未修復**。
+如果 mini-tier 仍能只靠「名物 + 熱鬧城市印象 + 橋 / 夜景 / 地標」把整組解釋得很完整，或 4 個線索最後都被它合理壓成同一個交通 / 商場 / 觀光區子物件，這種 travel weak case 仍應視為 **未修復**。
 
 ## Interpretation
 
