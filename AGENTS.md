@@ -67,10 +67,3 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 ## Command Output
 
 Protect context usage. **Any command with unknown or potentially large output must be byte-capped.**
-
-```bash
-# Examples
-cargo build 2>&1 | head -c 8000
-git log --oneline | head -50
-kubectl logs deployment/foo | tail -c 4000
-```
