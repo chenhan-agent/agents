@@ -67,3 +67,7 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 ## Command Output
 
 Protect context usage. **Any command with unknown or potentially large output must be byte-capped.**
+
+## File Editing
+
+Always view the file right before editing.
