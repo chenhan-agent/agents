@@ -71,3 +71,7 @@ Protect context usage. **Any command with unknown or potentially large output mu
 ## File Editing
 
 Always view the file right before editing.
+
+## Language
+
+When communicating in Chinese, always use Traditional Chinese (Taiwan) with localized terminology and colloquialisms.
