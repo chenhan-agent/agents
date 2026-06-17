@@ -1,76 +1,50 @@
 # agents
 
-## Autoresearch loop for `emoji-witty-zh-tw`
+Shared agent skills / instructions repo for **Claude Code**, **Codex**, **agy**, and **GitHub Copilot**.
 
-This repo includes a minimal autoresearch-style runner that can iterate on the witty emoji skill for multiple loops, benchmark each candidate, and keep or discard changes based on reasoning-gap metrics.
+## What this repo is for
 
-The implementation now follows the skill-local layout:
+- keep one shared skill source in `.agents/skills/`
+- keep one canonical instruction source in `AGENTS.md`
+- expose tool-specific instruction entry points without duplicating the rules
 
-- `.agents/skills/emoji-witty-zh-tw/SKILL.md`
-- `.agents/skills/emoji-witty-zh-tw/scripts/autoresearch.py`
-- `.agents/skills/emoji-witty-zh-tw/references/emoji-witty-zh-tw/*.md`
+This repo intentionally keeps the README high level. Browse `.agents/skills/` directly for the actual skills.
 
-### What it mutates
+## Instruction files in this repo
 
-The runner intentionally limits edits to:
+- **Codex:** `AGENTS.md`
+- **Claude Code:** `CLAUDE.md`
+- **agy:** `GEMINI.md`
+- **Copilot:** `.github/copilot-instructions.md`
 
-- `.agents/skills/emoji-witty-zh-tw/SKILL.md`
-- `.agents/skills/emoji-witty-zh-tw/references/emoji-witty-zh-tw/test-cases.md`
-- `.agents/skills/emoji-witty-zh-tw/references/emoji-witty-zh-tw/target-metrics.md`
+`CLAUDE.md`, `GEMINI.md`, and `.github/copilot-instructions.md` should stay thin wrappers around the canonical rules in `AGENTS.md`.
 
-### What it benchmarks
+## Global setup
 
-Each loop runs a fixed generator / solver / judge flow:
+Use **symlinks**, not copies, so this repo stays the source of truth.
 
-1. Generate emoji designs for the selected targets
-2. Ask a full-tier solver and a mini-tier solver to explain them
-3. Judge both solver outputs against the generator rationale
-4. Aggregate a reasoning-gap objective
-5. Keep or discard the candidate
+### Global skills
 
-### Default backend matrix
-
-The runner now defaults to:
-
-- **generator**: Codex (`reasoning_effort=high`)
-- **judge**: Codex (`reasoning_effort=high`)
-- **solvers**:
-  - Codex full (`reasoning_effort=high`)
-  - Copilot full (`gpt-5.4`)
-  - Gemini full (CLI default model unless overridden)
-  - Copilot mini (`gpt-5.4-mini`)
-
-This keeps generation and judging anchored to Codex, while using a multi-provider solver matrix.
-
-### Run it
+If a tool supports a global skills directory, a symlink is enough:
 
 ```bash
-python3 .agents/skills/emoji-witty-zh-tw/scripts/autoresearch.py --iterations 10
+ln -s /path/to/agents/.agents/skills ~/.codex/skills
+ln -s /path/to/agents/.agents/skills ~/.copilot/skills
 ```
 
-Useful flags:
+If your Claude Code or agy setup also supports a user-level skills path, point it at the same `.agents/skills/` directory.
 
-- `--baseline-only` — run only the benchmark baseline, without mutation loops
-- `--cases osaka,hongkong` — choose the benchmark case pool
-- `--output-dir .autoresearch-runs/emoji-witty-zh-tw` — change where artifacts are written
-- `--mutation-backend codex:full:mutation::high` — choose the mutation backend
-- `--generator-backend codex:full:generator::high` — choose the generator backend
-- `--judge-backend codex:full:judge::high` — choose the judge backend
-- `--solver-backend provider:tier:label[:model[:reasoning_effort]]` — add or replace solver backends
+### Global instructions
 
-### Artifacts
+Copilot supports a user-level instructions file, so this can also be a symlink:
 
-Each run writes a timestamped directory under `.autoresearch-runs/emoji-witty-zh-tw/` with:
+```bash
+ln -s /path/to/agents/AGENTS.md ~/.copilot/copilot-instructions.md
+```
 
-- `config.json`
-- `baseline/`
-- `iteration-*/mutation.json`
-- `iteration-*/benchmark/`
-- `iteration-*/decision.json`
-- `run-summary.json`
+For repo-local usage, keep these files at the repo root:
 
-This is the repo's equivalent of an overnight autoresearch log: each iteration records the mutation hypothesis, benchmark result, and keep/discard decision.
-
-More runner details live in:
-
-- `.agents/skills/emoji-witty-zh-tw/references/emoji-witty-zh-tw/autoresearch.md`
+- `AGENTS.md`
+- `CLAUDE.md`
+- `GEMINI.md`
+- `.github/copilot-instructions.md`
