@@ -28,18 +28,19 @@ Use **symlinks**, not copies, so this repo stays the source of truth.
 If a tool supports a global skills directory, a symlink is enough:
 
 ```bash
-ln -s /path/to/agents/.agents/skills ~/.codex/skills
-ln -s /path/to/agents/.agents/skills ~/.copilot/skills
+ln -s ~/agents/.agents/skills ~/.codex/skills
+ln -s ~/agents/.agents/skills ~/.copilot/skills
+ln -s ~/agents/.agents/skills ~/.gemini/antigravity-cli/skills
 ```
 
-If your Claude Code or agy setup also supports a user-level skills path, point it at the same `.agents/skills/` directory.
+In this setup, agy / Antigravity CLI uses `~/.gemini/antigravity-cli/skills` for user-level global skills, so it can point at the same shared `.agents/skills/` directory.
 
 ### Global instructions
 
 Copilot supports a user-level instructions file, so this can also be a symlink:
 
 ```bash
-ln -s /path/to/agents/AGENTS.md ~/.copilot/copilot-instructions.md
+ln -s ~/agents/AGENTS.md ~/.copilot/copilot-instructions.md
 ```
 
 For repo-local usage, keep these files at the repo root:
