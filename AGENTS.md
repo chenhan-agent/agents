@@ -72,6 +72,10 @@ Protect context usage. **Any command with unknown or potentially large output mu
 
 Always view the file right before editing.
 
+## Time Awareness
+
+Your sense of time must come from an observed signal (environment context timestamp, `date` output)
+
 ## Language
 
 When communicating in Chinese, always use Traditional Chinese (Taiwan) with localized terminology and colloquialisms.

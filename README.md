@@ -37,11 +37,38 @@ In this setup, agy / Antigravity CLI uses `~/.gemini/antigravity-cli/skills` for
 
 ### Global instructions
 
-Copilot supports a user-level instructions file, so this can also be a symlink:
+For instructions, each tool has its own global entry point. Keep `~/agents`
+as the canonical source, then expose tool-specific shims with symlinks.
+
+| Tool | Global entry point | Recommended link target | Notes |
+|------|--------------------|-------------------------|-------|
+| **agy / agy-acp** | `~/AGENTS.md` | `~/agents/AGENTS.md` | Works when `/home/agent` is added as a workspace, which is the normal OpenAB `working_dir=/home/agent` setup. |
+| **Codex** | `~/.codex/AGENTS.md` | `~/agents/AGENTS.md` | Codex also merges repo-local and subdirectory `AGENTS.md` files hierarchically. |
+| **Claude Code** | `~/.claude/CLAUDE.md` | `~/agents/CLAUDE.md` | Keep `CLAUDE.md` as a thin wrapper around the canonical rules in `AGENTS.md`. |
+| **Gemini CLI** | `~/.gemini/GEMINI.md` | `~/agents/GEMINI.md` | Use this when running Gemini directly rather than through `agy-acp`. |
+| **GitHub Copilot CLI** | `~/.copilot/copilot-instructions.md` | `~/agents/.github/copilot-instructions.md` | This is Copilot's user-level personal instructions file. |
+| **GitHub Copilot CLI** | `COPILOT_CUSTOM_INSTRUCTIONS_DIRS` | `~/agents` | Add this so Copilot can also discover the canonical `~/agents/AGENTS.md` and any shared `*.instructions.md` files from this repo. |
+
+Example setup:
 
 ```bash
-ln -s ~/agents/AGENTS.md ~/.copilot/copilot-instructions.md
+mkdir -p ~/.codex ~/.claude ~/.copilot ~/.gemini
+
+ln -sfn ~/agents/AGENTS.md ~/AGENTS.md
+ln -sfn ~/agents/AGENTS.md ~/.codex/AGENTS.md
+ln -sfn ~/agents/CLAUDE.md ~/.claude/CLAUDE.md
+ln -sfn ~/agents/GEMINI.md ~/.gemini/GEMINI.md
+ln -sfn ~/agents/.github/copilot-instructions.md ~/.copilot/copilot-instructions.md
 ```
+
+For Copilot, also export the extra instructions directory from your shell init:
+
+```bash
+export COPILOT_CUSTOM_INSTRUCTIONS_DIRS="$HOME/agents"
+```
+
+That keeps one canonical `AGENTS.md` in this repo while still letting each
+tool read instructions from the path it expects.
 
 For repo-local usage, keep these files at the repo root:
 
